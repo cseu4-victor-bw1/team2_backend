@@ -18,6 +18,9 @@ def initialize(request):
     player = user.player
     player_id = player.id
     uuid = player.uuid
+    start_room = Room.objects.get(n_to=0, w_to=0)
+    player.currentRoom = start_room.id
+    player.save()
     room = player.room()
     players = room.playerNames(player_id)
     return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players}, safe=True)
