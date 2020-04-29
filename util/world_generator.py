@@ -1,4 +1,4 @@
-from utils.endpoint import contentGeneration
+from util.endpoint import contentGeneration
 from random import randint
 from adventure.models import Room
 
@@ -42,3 +42,9 @@ class World:
                     complement = self.grid[y - 1][x]
                     room.connectRooms(complement, direction)
                     complement.connectRooms(room, "s")
+
+
+Room.objects.all().delete()
+
+world = World()
+world.generate_rooms()
