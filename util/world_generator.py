@@ -1,4 +1,4 @@
-from endpoint import contentGeneration
+from util.endpoint import contentGeneration
 from random import randint
 from adventure.models import Room
 
@@ -22,18 +22,18 @@ class World:
 
         for y, row in enumerate(self.grid):
             for x, room in enumerate(row):
-                directions = ['s', 'e']
+                directions = ['n', 'w']
                 direction = None
-
-                if y-1 == 9 and x-1 == 9:
+                if y - 1 < 0 and x - 1 < 0:
                     pass
-                elif y-1 == 9:
-                    direction = 's'
-                elif x-1 == 9:
-                    direction = 'e'
+                elif y - 1 < 0:
+                    direction = "w"
+                elif x - 1 < 0:
+                    direction = "n"
                 else:
                     rand_direction = randint(0, 1)
                     direction = directions[rand_direction]
+
                 if direction == "w":
                     complement = self.grid[y][x - 1]
                     room.connectRooms(complement, direction)
@@ -42,3 +42,9 @@ class World:
                     complement = self.grid[y - 1][x]
                     room.connectRooms(complement, direction)
                     complement.connectRooms(room, "s")
+
+
+Room.objects.all().delete()
+
+world = World()
+world.generate_rooms()
